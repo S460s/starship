@@ -23,7 +23,7 @@ class Player
   end
 
   def draw
-    @image.draw_rot(@x, @y, 1, @angle)
+    @image.draw_rot(@x, @y, Constants::Z_INDEX[:PLAYER], @angle)
   end
 
   def collect_stars(stars)
