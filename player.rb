@@ -50,7 +50,7 @@ class Player
 
   def colide(asteroids)
     asteroids.each do |asteroid|
-      if Gosu.distance(@x, @y, asteroid.x, asteroid.y) < 25
+      if Gosu.distance(@x, @y, asteroid.x, asteroid.y) < 40
         @dead = true
         break
       end

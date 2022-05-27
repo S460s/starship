@@ -37,7 +37,7 @@ class Tutorial < Gosu::Window
   def draw
     if @gg
       @game_over_image.draw(0, 0, Constants::Z_INDEX[:PLAYER])
-      @font.draw_text("You lost. Your final score is: #{@player.score}. Press 'space' to restart.", 200, 240, Constants::Z_INDEX[:UI], 1.0, 1.0,
+      @font.draw_text("You lost. Your final score is: #{@player.score}. Press 'space' to restart.", 100, 240, Constants::Z_INDEX[:UI], 1.0, 1.0,
                       Gosu::Color::YELLOW)
     else
       @background_image.draw(0, 0, Constants::Z_INDEX[:BACKGROUND])
