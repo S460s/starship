@@ -1,17 +1,53 @@
+require_relative 'consts'
+
 # Player class
 class Player
   attr_reader :score
 
   def initialize
-    @image = Gosu::Image.new('media/starfighter.bmp')
-    @x = @y = @vel_x = @vel_y = @angle = 0.0
+    @image = Gosu::Image.new('media/ship_3.png')
+    @x = Constants::SCREE_SIZE[:width] / 2
+    @y = Constants::SCREE_SIZE[:height] / 2
+
+    @vel_x = @vel_y = @angle = 0.0
     @beep = Gosu::Sample.new('media/beep.wav')
     @score = 0
   end
 
-  def wrap(x, y)
-    @x = x
-    @y = y
+  def handle_move
+    turn_left if Gosu.button_down? Gosu::KB_LEFT
+    turn_right if Gosu.button_down? Gosu::KB_RIGHT
+    accelerate if Gosu.button_down? Gosu::KB_UP
+    decelerate if Gosu.button_down? Gosu::KB_DOWN
+    move
+  end
+
+  def draw
+    @image.draw_rot(@x, @y, 1, @angle)
+  end
+
+  def collect_stars(stars)
+    stars.reject! do |star|
+      if Gosu.distance(@x, @y, star.x, star.y) < 35
+        @score += 1
+        @beep.play
+        true
+      else
+        false
+      end
+    end
+  end
+
+  private
+
+  def move
+    @x += @vel_x
+    @y += @vel_y
+    @x %= Constants::SCREE_SIZE[:width]
+    @y %= Constants::SCREE_SIZE[:height]
+
+    @vel_x *= 0.95
+    @vel_y *= 0.95
   end
 
   def turn_left
@@ -30,31 +66,5 @@ class Player
 
   def decelerate
     accelerate(-1)
-  end
-
-  def move
-    @x += @vel_x
-    @y += @vel_y
-    @x %= 640
-    @y %= 480
-
-    @vel_x *= 0.95
-    @vel_y *= 0.95
-  end
-
-  def draw
-    @image.draw_rot(@x, @y, 1, @angle)
-  end
-
-  def collect_stars(stars)
-    stars.reject! do |star|
-      if Gosu.distance(@x, @y, star.x, star.y) < 35
-        @score += 1
-        @beep.play
-        true
-      else
-        false
-      end
-    end
   end
 end
