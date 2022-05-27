@@ -37,7 +37,7 @@ class Tutorial < Gosu::Window
   def draw
     if @gg
       @game_over_image.draw(0, 0, Constants::Z_INDEX[:PLAYER])
-      @font.draw_text("You lost. Your final score is: #{@player.score}", 200, 240, Constants::Z_INDEX[:UI], 1.0, 1.0,
+      @font.draw_text("You lost. Your final score is: #{@player.score}. Press 'space' to restart.", 200, 240, Constants::Z_INDEX[:UI], 1.0, 1.0,
                       Gosu::Color::YELLOW)
     else
       @background_image.draw(0, 0, Constants::Z_INDEX[:BACKGROUND])
@@ -49,9 +49,18 @@ class Tutorial < Gosu::Window
     end
   end
 
+  def restart
+    @player.reset
+    @gg = false
+    Star.stars.clear
+    Asteroid.asteroids.clear
+  end
+
   def button_down(id)
     if id == Gosu::KB_ESCAPE
       close
+    elsif id == Gosu::KB_SPACE && @gg
+      restart
     else
       super
     end

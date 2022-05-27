@@ -2,7 +2,8 @@ require_relative 'consts'
 
 # Player class
 class Player
-  attr_reader :score, :dead
+  attr_reader :score
+  attr_accessor :dead
 
   def initialize
     @image = Gosu::Image.new('media/ship_3.png')
@@ -14,6 +15,13 @@ class Player
     @score = 0
 
     @dead = false
+  end
+
+  def reset
+    @dead = false
+    @x = Constants::SCREE_SIZE[:width] / 2
+    @y = Constants::SCREE_SIZE[:height] / 2
+    @score = 0
   end
 
   def handle_move
