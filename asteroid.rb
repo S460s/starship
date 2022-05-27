@@ -14,11 +14,11 @@ class Asteroid
   end
 
   def self.add_asteroid(image)
-    @@asteroids.push new(image) if rand(100) < 1 && @@asteroids.size < 25
+    @@asteroids.push new(image) if rand(100) < 3 && @@asteroids.size < 15
   end
 
   def self.move
-    @@asteroids.each(&:accelerate)
+    @@asteroids.each(&:move)
   end
 
   def self.asteroids
@@ -29,22 +29,27 @@ class Asteroid
     @image = image
     @x, @y = init_coords
 
-    @vel_x = @vel_y = 0.0
-    @angle = rand(360)
+    @vel_x = 0.0
+    @vel_y = 0.0
+    @angle = rand(160)
   end
 
   def draw
     @image.draw(@x, @y, Constants::Z_INDEX[:PLAYER])
   end
 
-  def accelerate
-    # @vel_x = Gosu.offset_x(@angle, 2.5)
-    # @vel_y = Gosu.offset_y(@angle, 2.5)
-    @x += Gosu.offset_x(@angle, 2.5)
-    @y += Gosu.offset_y(@angle, 2.5)
+  def move
+    accelerate
+    @x += @vel_x
+    @y += @vel_y
   end
 
   private
+
+  def accelerate
+    @vel_x = Gosu.offset_x(@angle, 2.5)
+    @vel_y = Gosu.offset_y(@angle, 2.5)
+  end
 
   # HACK/REFACTOR
   def init_coords

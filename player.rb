@@ -2,7 +2,7 @@ require_relative 'consts'
 
 # Player class
 class Player
-  attr_reader :score
+  attr_reader :score, :dead
 
   def initialize
     @image = Gosu::Image.new('media/ship_3.png')
@@ -12,6 +12,8 @@ class Player
     @vel_x = @vel_y = @angle = 0.0
     @beep = Gosu::Sample.new('media/beep.wav')
     @score = 0
+
+    @dead = false
   end
 
   def handle_move
@@ -34,6 +36,15 @@ class Player
         true
       else
         false
+      end
+    end
+  end
+
+  def colide(asteroids)
+    asteroids.each do |asteroid|
+      if Gosu.distance(@x, @y, asteroid.x, asteroid.y) < 25
+        @dead = true
+        break
       end
     end
   end
